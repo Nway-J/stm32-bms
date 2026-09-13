@@ -1,6 +1,6 @@
 Historical baseline cleanup rebuild: 2026-09-13
 Toolchain: Keil ARMCC 5.06
-Hardware validation: not repeated for this historical branch
+Hardware validation: passed on both nodes, reported by project author on 2026-09-13
 
 ECU-A:
 Program Size: Code=8988 RO-data=276 RW-data=64 ZI-data=4112
