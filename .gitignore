@@ -1,0 +1,14 @@
+**/std_periph_driver/
+**/startup/
+**/user/system_stm32f10x.*
+**/user/stm32f10x_conf.h
+**/Objects/
+**/Listings/
+**/DebugConfig/
+*.uvguix.*
+*.uvoptx
+*.log
+ECU_A/User/stm32f10x_it.c
+ECU_A/User/stm32f10x_it.h
+ECU_B/User/stm32f10x_it.c
+ECU_B/User/stm32f10x_it.h
