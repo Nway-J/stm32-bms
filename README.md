@@ -1,6 +1,6 @@
 # STM32双ECU：早期裸机基线
 
-当前分支保存历史裸机代码。推荐使用[main分支的当前验收版](../../tree/main)，其中ECU-A已迁移为FreeRTOS，并完善了故障管理、CLI和通信诊断。
+当前分支保存历史裸机代码。推荐使用[main分支的当前验收版](https://github.com/Nway-J/stm32-bms/tree/main)，其中ECU-A已迁移为FreeRTOS，并完善了故障管理、CLI和通信诊断。
 
 ## 来源
 
