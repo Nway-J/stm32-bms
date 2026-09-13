@@ -1,0 +1,13 @@
+Build verification: 2026-09-13
+Toolchain: Keil ARMCC 5.06
+Dependency restoration: exact SHA256 manifest verified
+ECU-A:
+linking...
+Program Size: Code=28820 RO-data=632 RW-data=400 ZI-data=11320  
+".\Objects\Project.axf" - 0 Error(s), 0 Warning(s).
+Build Time Elapsed:  00:00:05
+ECU-B:
+linking...
+Program Size: Code=7260 RO-data=896 RW-data=72 ZI-data=3624  
+".\Objects\Project.axf" - 0 Error(s), 0 Warning(s).
+Build Time Elapsed:  00:00:04

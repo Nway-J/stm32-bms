@@ -1,0 +1,210 @@
+diff --git a/official/FreeRTOSConfig.h b/ECU-A/FreeRtos/FreeRTOSConfig.h
+index 33f80ea..0ceb4e4 100644
+--- a/official/FreeRTOSConfig.h
++++ b/ECU-A/FreeRtos/FreeRTOSConfig.h
+@@ -51,7 +51,7 @@
+  * The default value is set to 20MHz and matches the QEMU demo settings.  Your
+  * application will certainly need a different value so set this correctly.
+  * This is very often, but not always, equal to the main system clock frequency. */
+-#define configCPU_CLOCK_HZ    ( ( unsigned long ) 20000000 )
++#define configCPU_CLOCK_HZ    ( ( unsigned long ) 72000000 )
+ 
+ /* configSYSTICK_CLOCK_HZ is an optional parameter for ARM Cortex-M ports only.
+  *
+@@ -75,7 +75,7 @@
+ 
+ /* configTICK_RATE_HZ sets frequency of the tick interrupt in Hz, normally
+  * calculated from the configCPU_CLOCK_HZ value. */
+-#define configTICK_RATE_HZ                         100
++#define configTICK_RATE_HZ                         1000
+ 
+ /* Set configUSE_PREEMPTION to 1 to use pre-emptive scheduling.  Set
+  * configUSE_PREEMPTION to 0 to use co-operative scheduling.
+@@ -87,8 +87,12 @@
+  * configUSE_TIME_SLICING to 0 to prevent the scheduler switching between Ready
+  * state tasks just because there was a tick interrupt.  See
+  * https://freertos.org/single-core-amp-smp-rtos-scheduling.html. */
+-#define configUSE_TIME_SLICING                     0
+-
++#define configUSE_TIME_SLICING                     1
++/*
++ * STM32F103只有一个Cortex-M3处理器核心。
++ * FreeRTOS V11支持SMP多核调度，但本工程是单核系统。
++ */
++#define configNUMBER_OF_CORES                      1
+ /* Set configUSE_PORT_OPTIMISED_TASK_SELECTION to 1 to select the next task to
+  * run using an algorithm optimised to the instruction set of the target hardware -
+  * normally using a count leading zeros assembly instruction.  Set to 0 to select
+@@ -106,7 +110,7 @@
+ /* configMAX_PRIORITIES Sets the number of available task priorities.  Tasks can
+  * be assigned priorities of 0 to (configMAX_PRIORITIES - 1).  Zero is the lowest
+  * priority. */
+-#define configMAX_PRIORITIES                       5
++#define configMAX_PRIORITIES                       6
+ 
+ /* configMINIMAL_STACK_SIZE defines the size of the stack used by the Idle task
+  * (in words, not in bytes!).  The kernel does not use this constant for any other
+@@ -132,7 +136,7 @@
+  *
+  * Defining configTICK_TYPE_WIDTH_IN_BITS as TICK_TYPE_WIDTH_64_BITS causes
+  * TickType_t to be defined (typedef'ed) as an unsigned 64-bit type. */
+-#define configTICK_TYPE_WIDTH_IN_BITS              TICK_TYPE_WIDTH_64_BITS
++#define configTICK_TYPE_WIDTH_IN_BITS              TICK_TYPE_WIDTH_32_BITS
+ 
+ /* Set configIDLE_SHOULD_YIELD to 1 to have the Idle task yield to an
+  * application task if there is an Idle priority (priority 0) application task that
+@@ -149,7 +153,7 @@
+ /* configQUEUE_REGISTRY_SIZE sets the maximum number of queues and semaphores
+  * that can be referenced from the queue registry.  Only required when using a
+  * kernel aware debugger.  Defaults to 0 if left undefined. */
+-#define configQUEUE_REGISTRY_SIZE                  0
++#define configQUEUE_REGISTRY_SIZE                  8
+ 
+ /* Set configENABLE_BACKWARD_COMPATIBILITY to 1 to map function names and
+  * datatypes from old version of FreeRTOS to their latest equivalent.  Defaults to
+@@ -215,15 +219,15 @@
+  * FreeRTOS/source/timers.c source file must be included in the build if
+  * configUSE_TIMERS is set to 1.  Default to 0 if left undefined.  See
+  * https://www.freertos.org/RTOS-software-timer.html. */
+-#define configUSE_TIMERS                1
++#define configUSE_TIMERS                0
+ 
+ /* configTIMER_TASK_PRIORITY sets the priority used by the timer task.  Only
+  * used if configUSE_TIMERS is set to 1.  The timer task is a standard FreeRTOS
+  * task, so its priority is set like any other task.  See
+  * https://www.freertos.org/RTOS-software-timer-service-daemon-task.html  Only used
+  * if configUSE_TIMERS is set to 1. */
+-#define configTIMER_TASK_PRIORITY       ( configMAX_PRIORITIES - 1 )
+-
++//#define configTIMER_TASK_PRIORITY       ( configMAX_PRIORITIES - 1 )
++#define configTIMER_TASK_PRIORITY					3
+ /* configTIMER_TASK_STACK_DEPTH sets the size of the stack allocated to the
+  * timer task (in words, not in bytes!).  The timer task is a standard FreeRTOS
+  * task.  See https://www.freertos.org/RTOS-software-timer-service-daemon-task.html
+@@ -256,7 +260,7 @@
+  * FreeRTOS/source/stream_buffer.c source file must be included in the build if
+  * configUSE_STREAM_BUFFERS is set to 1. Defaults to 1 if left undefined. */
+ 
+-#define configUSE_STREAM_BUFFERS    1
++#define configUSE_STREAM_BUFFERS    0
+ 
+ /******************************************************************************/
+ /* Memory allocation related definitions. *************************************/
+@@ -280,7 +284,7 @@
+  * or heap_4.c are included in the build.  This value is defaulted to 4096 bytes but
+  * it must be tailored to each application.  Note the heap will appear in the .bss
+  * section.  See https://www.freertos.org/a00111.html. */
+-#define configTOTAL_HEAP_SIZE                        4096
++#define configTOTAL_HEAP_SIZE                        8192
+ 
+ /* Set configAPPLICATION_ALLOCATED_HEAP to 1 to have the application allocate
+  * the array used as the FreeRTOS heap.  Set to 0 to have the linker allocate the
+@@ -298,7 +302,7 @@
+ /* Set configENABLE_HEAP_PROTECTOR to 1 to enable bounds checking and obfuscation
+  * to internal heap block pointers in heap_4.c and heap_5.c to help catch pointer
+  * corruptions. Defaults to 0 if left undefined. */
+-#define configENABLE_HEAP_PROTECTOR                  0
++#define configENABLE_HEAP_PROTECTOR                  1
+ 
+ /******************************************************************************/
+ /* Interrupt nesting behaviour configuration. *********************************/
+@@ -308,7 +312,7 @@
+  * switch performing interrupts.  Not supported by all FreeRTOS ports.  See
+  * https://www.freertos.org/RTOS-Cortex-M3-M4.html for information specific to
+  * ARM Cortex-M devices. */
+-#define configKERNEL_INTERRUPT_PRIORITY          0
++#define configKERNEL_INTERRUPT_PRIORITY          (15 << 4)
+ 
+ /* configMAX_SYSCALL_INTERRUPT_PRIORITY sets the interrupt priority above which
+  * FreeRTOS API calls must not be made.  Interrupts above this priority are never
+@@ -316,7 +320,7 @@
+  * highest interrupt priority (0).  Not supported by all FreeRTOS ports.
+  * See https://www.freertos.org/RTOS-Cortex-M3-M4.html for information specific to
+  * ARM Cortex-M devices. */
+-#define configMAX_SYSCALL_INTERRUPT_PRIORITY     0
++#define configMAX_SYSCALL_INTERRUPT_PRIORITY     (5 << 4)
+ 
+ /* Another name for configMAX_SYSCALL_INTERRUPT_PRIORITY - the name used depends
+  * on the FreeRTOS port. */
+@@ -370,7 +374,7 @@
+  * are used by trace and visualisation functions and tools.  Set to 0 to exclude
+  * the additional information from the structures. Defaults to 0 if left
+  * undefined. */
+-#define configUSE_TRACE_FACILITY                0
++#define configUSE_TRACE_FACILITY                1
+ 
+ /* Set to 1 to include the vTaskList() and vTaskGetRunTimeStats() functions in
+  * the build.  Set to 0 to exclude these functions from the build.  These two
+@@ -569,7 +573,7 @@
+  * to enable the TrustZone support in FreeRTOS ARMv8-M ports which allows the
+  * non-secure FreeRTOS tasks to call the (non-secure callable) functions
+  * exported from secure side. */
+-#define configENABLE_TRUSTZONE            1
++#define configENABLE_TRUSTZONE            0
+ 
+ /* If the application writer does not want to use TrustZone, but the hardware does
+  * not support disabling TrustZone then the entire application (including the FreeRTOS
+@@ -580,18 +584,18 @@
+ 
+ /* Set configENABLE_MPU to 1 to enable the Memory Protection Unit (MPU), or 0
+  * to leave the Memory Protection Unit disabled. */
+-#define configENABLE_MPU                  1
++#define configENABLE_MPU                  0
+ 
+ /* Set configENABLE_FPU to 1 to enable the Floating Point Unit (FPU), or 0
+  * to leave the Floating Point Unit disabled. */
+-#define configENABLE_FPU                  1
++#define configENABLE_FPU                  0
+ 
+ /* Set configENABLE_MVE to 1 to enable the M-Profile Vector Extension (MVE) support,
+  * or 0 to leave the MVE support disabled. This option is only applicable to Cortex-M55
+  * and Cortex-M85 ports as M-Profile Vector Extension (MVE) is available only on
+  * these architectures. configENABLE_MVE must be left undefined, or defined to 0
+  * for the Cortex-M23,Cortex-M33 and Cortex-M35P ports. */
+-#define configENABLE_MVE                  1
++#define configENABLE_MVE                  0
+ 
+ /******************************************************************************/
+ /* ARMv7-M and ARMv8-M port Specific Configuration definitions. ***************/
+@@ -619,8 +623,8 @@
+  * the build, or 0 to exclude the named feature from the build. */
+ #define configUSE_TASK_NOTIFICATIONS           1
+ #define configUSE_MUTEXES                      1
+-#define configUSE_RECURSIVE_MUTEXES            1
+-#define configUSE_COUNTING_SEMAPHORES          1
++#define configUSE_RECURSIVE_MUTEXES            0
++#define configUSE_COUNTING_SEMAPHORES          0
+ #define configUSE_QUEUE_SETS                   0
+ #define configUSE_APPLICATION_TASK_TAG         0
+ 
+@@ -636,13 +640,25 @@
+ #define INCLUDE_vTaskDelay                     1
+ #define INCLUDE_xTaskGetSchedulerState         1
+ #define INCLUDE_xTaskGetCurrentTaskHandle      1
+-#define INCLUDE_uxTaskGetStackHighWaterMark    0
+-#define INCLUDE_xTaskGetIdleTaskHandle         0
+-#define INCLUDE_eTaskGetState                  0
++#define INCLUDE_uxTaskGetStackHighWaterMark    1
++#define INCLUDE_xTaskGetIdleTaskHandle         1
++#define INCLUDE_eTaskGetState                  1
+ #define INCLUDE_xEventGroupSetBitFromISR       1
+ #define INCLUDE_xTimerPendFunctionCall         0
+-#define INCLUDE_xTaskAbortDelay                0
+-#define INCLUDE_xTaskGetHandle                 0
++#define INCLUDE_xTaskAbortDelay                1
++#define INCLUDE_xTaskGetHandle                 1
+ #define INCLUDE_xTaskResumeFromISR             1
+ 
++/******************************************************************************/
++/* Cortex-M3 exception handler mapping.                                       */
++/******************************************************************************/
++
++/*
++ * FreeRTOS Cortex-M3移植层中的处理函数名，
++ * 映射到STM32启动文件向量表使用的标准异常名称。
++ */
++#define vPortSVCHandler        SVC_Handler
++#define xPortPendSVHandler     PendSV_Handler
++#define xPortSysTickHandler    SysTick_Handler
++
+ #endif /* FREERTOS_CONFIG_H */

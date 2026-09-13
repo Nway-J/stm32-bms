@@ -1,0 +1,70 @@
+# 从接线到第一次故障实验
+
+## 1. 准备
+
+- 两块STM32F103C8T6核心板，ST-Link，Keil MDK与ARM Compiler 5.06（本项目使用ARMCC5），STM32F1设备支持包。
+- 两个兼容3.3V逻辑的CAN收发器、CAN双绞线、两端各120Ω终端电阻、公共地。
+- 3.3V USB串口模块、I2C OLED、SPI Flash（本机XM25QH32，读取ID为0x2015）。
+- 10k与20k分压电阻、10k/B3950 NTC及10k上拉、按键、蜂鸣器模块、电位器。
+
+先使用可调低压信号或电位器验证，再接真实电池。ADC输入不能直接接电池正极，PA0/PA1不能超过VDDA允许范围。蜂鸣器功率负载通过模块驱动，不由GPIO直接带载。
+
+## 2. 恢复依赖
+
+公开仓库保留自编代码、工程文件与MIT许可的FreeRTOS。ST标准库与启动文件需要从自己取得的对应软件包恢复；本次验证副本使用SPL V3.5.0及其配套CMSIS/启动文件。依赖的精确文件路径和SHA256见 [dependencies.json](dependencies.json)。
+
+官方包入口：[STSW-STM32054](https://www.st.com/en/embedded-software/stsw-stm32054.html)。按供应方条款取得文件后，在仓库根运行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools/install-dependencies.ps1 -SourceRoot 'D:\SDK\STM32F10x_StdPeriph_Lib_V3.5.0'
+```
+
+脚本按文件名和SHA256寻找文件，复制到工程要求的位置。也可将自己已可编译的原工程目录作为SourceRoot。若某文件不匹配，脚本明确列出缺项；不要用不同版本文件强行覆盖。不同分支使用各自的清单，不能假定裸机版依赖与主线相同。
+
+这里保留了精确依赖清单以便复现，但未承诺官方现行下载包与旧文件逐字节相同；遇到缺项需要取得匹配版本。`stm32f10x_it.c/h`也来自ST模板，其中A添加过串口入口，因此官方原文件可能无法匹配。没有作者本地副本时，可按下述步骤自行适配，适配后需要重新编译和上板验证，不能继续声称与清单完全一致。
+
+- 用官方配套中断模板放到 `User/stm32f10x_it.c/h`。
+- A的SVC、PendSV、SysTick由FreeRTOS端口提供，删除模板中这三个空函数定义，避免重复符号。
+- A添加 `#include "bsp_usart.h"`，并添加 `void USART1_IRQHandler(void) { USART1_RxIRQHandler(); }`。中断模板头文件加入对应声明。
+- DMA、TIM3、CAN中断定义已在本仓库BSP中，模板不要重复定义。
+- B维持裸机入口；模板中不要额外加入RTOS调度调用。
+
+仓库还没有可公开分发的完整自制PCB文件，以下以引脚级搭建为准。
+
+## 3. 连接ECU-A
+
+| 信号 | 引脚 | 接法 |
+|---|---|---|
+| 电压 | PA0 | 电池正极→10k→采样点→20k→MCU GND |
+| 温度 | PA1 | 3.3V→10k→采样点→NTC→GND |
+| 启动键 | PB6 | 按下接地，输入上拉 |
+| 恢复键 | PA2 | 按下接地，输入上拉 |
+| 蜂鸣器控制 | PA8 | 对应蜂鸣器驱动输入，核对模块有效电平 |
+| LED | PC13 | 核心板LED |
+| 串口 | PA9 TX / PA10 RX | TX接对方RX、RX接对方TX、共地 |
+| CAN | PA12 TX / PA11 RX | 接收发器逻辑侧，禁止直接当CANH/CANL连接 |
+| Flash | PA4 CS / PA5 SCK / PA6 MISO / PA7 MOSI | 3.3V与共地，核对Flash模块引脚 |
+
+3.68V电池在10k/20k分压后，PA0应约为2.45V。先用万用表测量，再上电观察软件。软件参考电压当前为3.27V，在 `app_sensor.c` 中；换板后依据实际VDDA校准，不能用改系数掩盖分压电阻开路。
+
+## 4. 连接ECU-B
+
+串口仍为PA9/PA10；CAN仍为PA12/PA11，经收发器连接。OLED使用软件I2C：PA4=SCL、PA3=SDA。两块板引脚同名不代表需要彼此连接；仅连接各自外设，并将两收发器CANH相连、CANL相连、公共地相连。
+
+断电时完整总线两端120Ω并联，CANH/CANL间通常约60Ω；测阻值前断电。确认总线两端都供电并运行。
+
+## 5. 编译和烧录
+
+1. 打开 `ECU-A/Project.uvprojx`，选择ARMCC5，目标STM32F103C8（64KB Flash、20KB RAM），时钟72MHz。
+2. 保留工程中的MicroLIB设置，串口printf通过驱动重定向；不要恢复半主机依赖。
+3. 执行Rebuild，确认0 error；选择自己的ST-Link和SWD，烧录。
+4. 同样打开、编译、烧录 `ECU-B/Project.uvprojx`。B仍运行裸机主循环。
+5. 两个节点必须来自同一分支版本，避免CRC或字段格式不一致导致CAN LOST。
+
+工程用户界面设置和编译产物不纳入Git，因此第一次使用需要设置本机下载器。固件默认不随仓库分发，源码构建证据见[验证文档](validation-and-interview.md)。
+
+## 6. 开始观察
+
+ECU-A串口应有日志初始化、CAN初始化、FreeRTOS启动、CLI就绪和自检结果。输入 `status`，核对ADC、物理量、快照序号与年龄。按启动键进入监测，旋转电位器，ECU-B显示应持续更新；发生故障时采样仍继续。
+
+然后按[过压注入实验](faults-and-cli.md)验证完整链路。

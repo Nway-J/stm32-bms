@@ -1,0 +1,446 @@
+[
+  {
+    "node": "ECU-A",
+    "path": "freertos_hooks.c",
+    "official": "application-provided hook",
+    "identical_except_line_endings": null
+  },
+  {
+    "node": "ECU-A",
+    "path": "FreeRTOSConfig.h",
+    "official": "examples\\template_configuration\\FreeRTOSConfig.h",
+    "identical_except_line_endings": false
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\atomic.h",
+    "official": "include\\atomic.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\croutine.h",
+    "official": "include\\croutine.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\deprecated_definitions.h",
+    "official": "include\\deprecated_definitions.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\event_groups.h",
+    "official": "include\\event_groups.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\FreeRTOS.h",
+    "official": "include\\FreeRTOS.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\list.h",
+    "official": "include\\list.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\message_buffer.h",
+    "official": "include\\message_buffer.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\mpu_prototypes.h",
+    "official": "include\\mpu_prototypes.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\mpu_syscall_numbers.h",
+    "official": "include\\mpu_syscall_numbers.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\mpu_wrappers.h",
+    "official": "include\\mpu_wrappers.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\newlib-freertos.h",
+    "official": "include\\newlib-freertos.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\picolibc-freertos.h",
+    "official": "include\\picolibc-freertos.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\portable.h",
+    "official": "include\\portable.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\projdefs.h",
+    "official": "include\\projdefs.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\queue.h",
+    "official": "include\\queue.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\semphr.h",
+    "official": "include\\semphr.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\stack_macros.h",
+    "official": "include\\stack_macros.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\StackMacros.h",
+    "official": "include\\StackMacros.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\stream_buffer.h",
+    "official": "include\\stream_buffer.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\task.h",
+    "official": "include\\task.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "inc\\timers.h",
+    "official": "include\\timers.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "port\\heap_1.c",
+    "official": "portable\\MemMang\\heap_1.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "port\\heap_2.c",
+    "official": "portable\\MemMang\\heap_2.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "port\\heap_3.c",
+    "official": "portable\\MemMang\\heap_3.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "port\\heap_4.c",
+    "official": "portable\\MemMang\\heap_4.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "port\\heap_5.c",
+    "official": "portable\\MemMang\\heap_5.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "port\\port.c",
+    "official": "portable\\RVDS\\ARM_CM3\\port.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "port\\portmacro.h",
+    "official": "portable\\RVDS\\ARM_CM3\\portmacro.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "src\\croutine.c",
+    "official": "croutine.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "src\\event_groups.c",
+    "official": "event_groups.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "src\\list.c",
+    "official": "list.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "src\\queue.c",
+    "official": "queue.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "src\\stream_buffer.c",
+    "official": "stream_buffer.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "src\\tasks.c",
+    "official": "tasks.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-A",
+    "path": "src\\timers.c",
+    "official": "timers.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "freertos_hooks.c",
+    "official": "application-provided hook",
+    "identical_except_line_endings": null
+  },
+  {
+    "node": "ECU-B",
+    "path": "FreeRTOSConfig.h",
+    "official": "examples\\template_configuration\\FreeRTOSConfig.h",
+    "identical_except_line_endings": false
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\atomic.h",
+    "official": "include\\atomic.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\croutine.h",
+    "official": "include\\croutine.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\deprecated_definitions.h",
+    "official": "include\\deprecated_definitions.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\event_groups.h",
+    "official": "include\\event_groups.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\FreeRTOS.h",
+    "official": "include\\FreeRTOS.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\list.h",
+    "official": "include\\list.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\message_buffer.h",
+    "official": "include\\message_buffer.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\mpu_prototypes.h",
+    "official": "include\\mpu_prototypes.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\mpu_syscall_numbers.h",
+    "official": "include\\mpu_syscall_numbers.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\mpu_wrappers.h",
+    "official": "include\\mpu_wrappers.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\newlib-freertos.h",
+    "official": "include\\newlib-freertos.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\picolibc-freertos.h",
+    "official": "include\\picolibc-freertos.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\portable.h",
+    "official": "include\\portable.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\projdefs.h",
+    "official": "include\\projdefs.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\queue.h",
+    "official": "include\\queue.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\semphr.h",
+    "official": "include\\semphr.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\stack_macros.h",
+    "official": "include\\stack_macros.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\StackMacros.h",
+    "official": "include\\StackMacros.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\stream_buffer.h",
+    "official": "include\\stream_buffer.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\task.h",
+    "official": "include\\task.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "inc\\timers.h",
+    "official": "include\\timers.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "port\\heap_1.c",
+    "official": "portable\\MemMang\\heap_1.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "port\\heap_2.c",
+    "official": "portable\\MemMang\\heap_2.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "port\\heap_3.c",
+    "official": "portable\\MemMang\\heap_3.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "port\\heap_4.c",
+    "official": "portable\\MemMang\\heap_4.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "port\\heap_5.c",
+    "official": "portable\\MemMang\\heap_5.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "port\\port.c",
+    "official": "portable\\RVDS\\ARM_CM3\\port.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "port\\portmacro.h",
+    "official": "portable\\RVDS\\ARM_CM3\\portmacro.h",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "src\\croutine.c",
+    "official": "croutine.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "src\\event_groups.c",
+    "official": "event_groups.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "src\\list.c",
+    "official": "list.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "src\\queue.c",
+    "official": "queue.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "src\\stream_buffer.c",
+    "official": "stream_buffer.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "src\\tasks.c",
+    "official": "tasks.c",
+    "identical_except_line_endings": true
+  },
+  {
+    "node": "ECU-B",
+    "path": "src\\timers.c",
+    "official": "timers.c",
+    "identical_except_line_endings": true
+  }
+]
