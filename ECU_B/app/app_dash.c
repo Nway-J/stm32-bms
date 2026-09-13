@@ -30,13 +30,11 @@
 #include <stdio.h>
 #include <string.h>
 
-
 // ============================================================
 // 全局显示数据
 // ============================================================
 
 BMS_DisplayData_t g_dash_data = {0};
-
 
 // ============================================================
 // Dash_Init
@@ -44,12 +42,7 @@ BMS_DisplayData_t g_dash_data = {0};
 // 仪表初始化
 // ============================================================
 
-void Dash_Init(void)
-{
-    memset(&g_dash_data, 0, sizeof(g_dash_data));
-
-}
-
+void Dash_Init(void) { memset(&g_dash_data, 0, sizeof(g_dash_data)); }
 
 // ============================================================
 // Dash_UpdateData
@@ -61,59 +54,53 @@ void Dash_Init(void)
 
 void Dash_UpdateData(CAN_Frame_t *frame)
 {
-    if(frame == NULL)
+    if (frame == NULL)
         return;
 
-    switch(frame->id)
+    switch (frame->id)
     {
-        //------------------------------------------------------
-        // 电压 + SOC + 状态
-        //------------------------------------------------------
-        case 0x301:
-        {
-            g_dash_data.cell_mv =
-                ((uint16_t)frame->data[0] << 8) |
-                 frame->data[1];
+    //------------------------------------------------------
+    // 电压 + SOC + 状态
+    //------------------------------------------------------
+    case 0x301:
+    {
+        g_dash_data.cell_mv = ((uint16_t)frame->data[0] << 8) | frame->data[1];
 
-            g_dash_data.soc =
-                frame->data[2];
+        g_dash_data.soc = frame->data[2];
 
-            g_dash_data.chg_state =
-                frame->data[3];
+        g_dash_data.chg_state = frame->data[3];
 
-            g_dash_data.valid = 1;
+        g_dash_data.valid = 1;
 
-            break;
-        }
+        break;
+    }
 
-        //------------------------------------------------------
-        // 温度
-        //------------------------------------------------------
-        case 0x302:
-        {
-            g_dash_data.temp =
-                frame->data[0];
+    //------------------------------------------------------
+    // 温度
+    //------------------------------------------------------
+    case 0x302:
+    {
+        g_dash_data.temp = frame->data[0];
 
-            g_dash_data.valid = 1;
+        g_dash_data.valid = 1;
 
-            break;
-        }
+        break;
+    }
 
-        //------------------------------------------------------
-        // 故障码
-        //------------------------------------------------------
-        case 0x303:
-        {
-            g_dash_data.fault =
-                frame->data[0];
+    //------------------------------------------------------
+    // 故障码
+    //------------------------------------------------------
+    case 0x303:
+    {
+        g_dash_data.fault = frame->data[0];
 
-            g_dash_data.valid = 1;
+        g_dash_data.valid = 1;
 
-            break;
-        }
+        break;
+    }
 
-        default:
-            break;
+    default:
+        break;
     }
 
     //----------------------------------------------------------
@@ -122,7 +109,6 @@ void Dash_UpdateData(CAN_Frame_t *frame)
 
     g_dash_data.last_rx_tick = GetTick();
 }
-
 
 // ============================================================
 // Dash_RefreshDisplay
@@ -141,15 +127,15 @@ void Dash_RefreshDisplay(void)
     // 从未收到CAN数据
     //----------------------------------------------------------
 
-    if(g_dash_data.valid == 0)
+    if (g_dash_data.valid == 0)
     {
         OLED_Clear();
 
-        OLED_ShowString(0,0,"BMS DASH");
-        OLED_ShowString(0,2,"Waiting CAN...");
+        OLED_ShowString(0, 0, "BMS DASH");
+        OLED_ShowString(0, 2, "Waiting CAN...");
 
         OLED_Refresh();
-			 g_dash_data.valid = 0;  // 加这行，清标志，允许下次更新
+        g_dash_data.valid = 0; // 加这行，清标志，允许下次更新
 
         return;
     }
@@ -158,12 +144,12 @@ void Dash_RefreshDisplay(void)
     // CAN超时检测
     //----------------------------------------------------------
 
-    if(GetTick() - g_dash_data.last_rx_tick > 1000)
+    if (GetTick() - g_dash_data.last_rx_tick > 1000)
     {
         OLED_Clear();
 
-        OLED_ShowString(0,0,"BMS DASH");
-        OLED_ShowString(0,2,"CAN LOST!");
+        OLED_ShowString(0, 0, "BMS DASH");
+        OLED_ShowString(0, 2, "CAN LOST!");
 
         OLED_Refresh();
 
@@ -176,7 +162,7 @@ void Dash_RefreshDisplay(void)
 
     OLED_Clear();
 
-    OLED_ShowString(0,0,"=== BMS DASH ===");
+    OLED_ShowString(0, 0, "=== BMS DASH ===");
 
     //----------------------------------------------------------
     // 电压
@@ -189,94 +175,82 @@ void Dash_RefreshDisplay(void)
     // 4.150V
     //----------------------------------------------------------
 
-    snprintf(
-        line,
-        sizeof(line),
-        "Cell:%d.%03dV",
-        g_dash_data.cell_mv / 100,
-        g_dash_data.cell_mv % 100);
+    snprintf(line, sizeof(line), "Cell:%d.%03dV", g_dash_data.cell_mv / 100,
+             g_dash_data.cell_mv % 100);
 
-    OLED_ShowString(0,1,line);
+    OLED_ShowString(0, 1, line);
 
     //----------------------------------------------------------
     // 充放电状态
     //----------------------------------------------------------
 
-    switch(g_dash_data.chg_state)
+    switch (g_dash_data.chg_state)
     {
-        case CHG_STATE_DISCHARGE:
+    case CHG_STATE_DISCHARGE:
 
-            OLED_ShowString(0,2,"DISCHARGE");
+        OLED_ShowString(0, 2, "DISCHARGE");
 
-            break;
+        break;
 
-        case CHG_STATE_CHARGE:
+    case CHG_STATE_CHARGE:
 
-            OLED_ShowString(0,2,"CHARGING");
+        OLED_ShowString(0, 2, "CHARGING");
 
-            break;
+        break;
 
-        default:
+    default:
 
-            OLED_ShowString(0,2,"STANDBY");
+        OLED_ShowString(0, 2, "STANDBY");
 
-            break;
+        break;
     }
 
     //----------------------------------------------------------
     // 温度
     //----------------------------------------------------------
 
-    snprintf(
-        line,
-        sizeof(line),
-        "Temp:%dC",
-        g_dash_data.temp);
+    snprintf(line, sizeof(line), "Temp:%dC", g_dash_data.temp);
 
-    OLED_ShowString(0,3,line);
+    OLED_ShowString(0, 3, line);
 
     //----------------------------------------------------------
     // SOC
     //----------------------------------------------------------
 
-    snprintf(
-        line,
-        sizeof(line),
-        "SOC:%d%%",
-        g_dash_data.soc);
+    snprintf(line, sizeof(line), "SOC:%d%%", g_dash_data.soc);
 
-    OLED_ShowString(0,4,line);
+    OLED_ShowString(0, 4, line);
 
     //----------------------------------------------------------
     // 故障显示
     //----------------------------------------------------------
 
-    if(g_dash_data.fault == 0)
+    if (g_dash_data.fault == 0)
     {
-        OLED_ShowString(0,5,"Fault:NONE");
+        OLED_ShowString(0, 5, "Fault:NONE");
     }
     else
     {
         char fault_str[20] = "";
 
-        if(g_dash_data.fault & 0x01)
+        if (g_dash_data.fault & 0x01)
         {
-            strcat(fault_str,"OVR ");
+            strcat(fault_str, "OVR ");
         }
 
-        if(g_dash_data.fault & 0x02)
+        if (g_dash_data.fault & 0x02)
         {
-            strcat(fault_str,"UND ");
+            strcat(fault_str, "UND ");
         }
 
-        if(g_dash_data.fault & 0x04)
+        if (g_dash_data.fault & 0x04)
         {
-            strcat(fault_str,"OVT ");
+            strcat(fault_str, "OVT ");
         }
 
-        OLED_ShowString(0,5,"FAULT:");
+        OLED_ShowString(0, 5, "FAULT:");
 
-        OLED_ShowString(48,5,fault_str);
+        OLED_ShowString(48, 5, fault_str);
     }
 
     //----------------------------------------------------------
@@ -285,4 +259,3 @@ void Dash_RefreshDisplay(void)
 
     OLED_Refresh();
 }
-

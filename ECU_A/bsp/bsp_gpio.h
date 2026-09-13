@@ -9,10 +9,8 @@ void KEY_Init(void);
 
 uint8_t KEY_Read(uint8_t pin);
 
-#define LED_ON()    GPIOC->ODR &= ~(1 << 13)
-#define LED_OFF()   GPIOC->ODR |=  (1 << 13)
+#define LED_ON() GPIOC->ODR &= ~(1 << 13)
+#define LED_OFF() GPIOC->ODR |= (1 << 13)
 #define LED_Toggle() GPIOC->ODR ^= (1 << 13)
 
 #endif
-
-

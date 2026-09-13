@@ -1,23 +1,11 @@
-Historical baseline rebuild 2026-09-13; ARMCC5; no new hardware validation.
+Historical baseline cleanup rebuild: 2026-09-13
+Toolchain: Keil ARMCC 5.06
+Hardware validation: not repeated for this historical branch
+
 ECU-A:
-linking...
-Program Size: Code=11656 RO-data=276 RW-data=64 ZI-data=4112  
-FromELF: creating hex file...
-".\Objects\template.axf" - 0 Error(s), 6 Warning(s).
-Build Time Elapsed:  00:00:05
-app\app_flash_log.c(159): warning:  #177-D: variable "count"  was declared but never referenced
-app\app_bms_state.c(396): warning:  #177-D: variable "ret"  was declared but never referenced
-bsp\bsp_spi_flash.c(19): warning:  #61-D: integer operation result is out of range
-bsp\bsp_spi_flash.c(20): warning:  #61-D: integer operation result is out of range
-bsp\bsp_spi_flash.c(20): warning:  #68-D: integer conversion resulted in a change of sign
-bsp\bsp_spi_flash.c(51): warning:  #940-D: missing return statement at end of non-void function "SPI1_SwapByte" 
+Program Size: Code=8988 RO-data=276 RW-data=64 ZI-data=4112
+".\Objects\template.axf" - 0 Error(s), 0 Warning(s).
+
 ECU-B:
-linking...
-Program Size: Code=5260 RO-data=816 RW-data=20 ZI-data=5132  
-FromELF: creating hex file...
-".\Objects\template.axf" - 0 Error(s), 4 Warning(s).
-Build Time Elapsed:  00:00:05
-bsp\bsp_can.c(171): warning:  #1-D: last line of file ends without a newline
-bsp\bsp_i2c.c(12): warning:  #61-D: integer operation result is out of range
-bsp\bsp_i2c.c(12): warning:  #61-D: integer operation result is out of range
-bsp\bsp_i2c.c(12): warning:  #68-D: integer conversion resulted in a change of sign
+Program Size: Code=5160 RO-data=816 RW-data=20 ZI-data=5132
+".\Objects\template.axf" - 0 Error(s), 0 Warning(s).

@@ -9,4 +9,3 @@ void USART1_SendByte(uint8_t data);
 void USART1_SendString(const char *str);
 
 #endif
-

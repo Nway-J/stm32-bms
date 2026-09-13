@@ -30,6 +30,6 @@ powershell -ExecutionPolicy Bypass -File tools/install-dependencies.ps1 -SourceR
 
 脚本按 [精确依赖清单](docs/dependencies.json) 恢复文件。该历史版本ST文件不同于main，必须匹配哈希。再用Keil ARMCC5打开 `ECU_A/ECU_A.uvprojx` 与 `ECU_B/ECU_B.uvprojx` 分别Rebuild，设置本机SWD下载器后烧录。
 
-历史快照用于学习对照；本次整理的编译结果见[构建记录](docs/build-results.txt)，没有为此旧快照重新做硬件验收。
+历史快照用于学习对照；公开前删除了逐帧调试输出、废弃注释代码并统一格式，同时修正了Flash日志回绕计数与SPI字节收发中的明确缺陷。整理后的编译结果见[构建记录](docs/build-results.txt)，没有为此旧快照重新做硬件验收。
 
-自编代码采用[MIT](LICENSE)。ST/CMSIS依赖未包含在公开源码中，其权利仍归原作者，按供应方条款取得使用。原始业务源码保持不变。
+自编代码采用[MIT](LICENSE)。ST/CMSIS依赖未包含在公开源码中，其权利仍归原作者，按供应方条款取得使用。

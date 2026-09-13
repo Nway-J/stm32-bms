@@ -19,18 +19,16 @@
 #include <stdio.h>
 
 // ─── 存储区域定义 ───
-#define LOG_SECTOR_ADDR     0x000000    // 日志所在Sector（F103C8T6的Flash扇区为4096字节）
-#define LOG_RECORD_SIZE     8           // 每条记录8字节
-#define LOG_MAX_RECORDS     512         // 4096 / 8 = 512条
+#define LOG_SECTOR_ADDR 0x000000 // 日志所在Sector（F103C8T6的Flash扇区为4096字节）
+#define LOG_RECORD_SIZE 8        // 每条记录8字节
+#define LOG_MAX_RECORDS 512      // 4096 / 8 = 512条
 
 // 编译时断言：检查日志是否超过扇区大小
 // 如果超出，编译会报错 "size constraint 'Log area overflow' violated"
 // 去掉注释启用（需要C11编译器支持）
-// _Static_assert(LOG_RECORD_SIZE * LOG_MAX_RECORDS <= 4096, "Log area overflow");
 
 // ─── 当前写索引（只在内存中维护，不存Flash）───
 static uint16_t g_log_index = 0;
-
 
 // ─────────────────────────────────────────────
 // FlashLog_Init — 故障日志初始化
@@ -53,10 +51,10 @@ void FlashLog_Init(void)
     g_log_index = 0;
 
     // 从前往后扫描，找到第一条Byte0=0xFF的记录位置
-    for(i = 0; i < LOG_MAX_RECORDS; i++)
+    for (i = 0; i < LOG_MAX_RECORDS; i++)
     {
         XM25QH32_ReadData(LOG_SECTOR_ADDR + i * LOG_RECORD_SIZE, &byte, 1);
-        if(byte == 0xFF)  // 未写入的位置
+        if (byte == 0xFF) // 未写入的位置
         {
             g_log_index = i;
             break;
@@ -65,12 +63,11 @@ void FlashLog_Init(void)
 
     // 如果全满，g_log_index停在LOG_MAX_RECORDS
     // 下次写入会触发擦除
-    if(i == LOG_MAX_RECORDS)
+    if (i == LOG_MAX_RECORDS)
         g_log_index = LOG_MAX_RECORDS;
 
     printf("[LOG] Fault log ready. Index=%d/%d\r\n", g_log_index, LOG_MAX_RECORDS);
 }
-
 
 // ─────────────────────────────────────────────
 // FlashLog_Write — 写入一条故障记录
@@ -100,10 +97,10 @@ void FlashLog_Write(uint8_t fault_code, uint16_t cell_mv, uint8_t temp, uint8_t 
     uint32_t addr;
 
     // 如果日志已写满，擦除整个Sector重新开始
-    if(g_log_index >= LOG_MAX_RECORDS)
+    if (g_log_index >= LOG_MAX_RECORDS)
     {
-        printf("[LOG] Log full (%d records), erasing sector 0x%06X...\r\n",
-               LOG_MAX_RECORDS, LOG_SECTOR_ADDR);
+        printf("[LOG] Log full (%d records), erasing sector 0x%06X...\r\n", LOG_MAX_RECORDS,
+               LOG_SECTOR_ADDR);
         XM25QH32_SectorErase(LOG_SECTOR_ADDR);
         g_log_index = 0;
     }
@@ -112,14 +109,14 @@ void FlashLog_Write(uint8_t fault_code, uint16_t cell_mv, uint8_t temp, uint8_t 
     addr = LOG_SECTOR_ADDR + g_log_index * LOG_RECORD_SIZE;
 
     // 组装记录
-    record[0] = fault_code;                     // 故障码
-    record[1] = (cell_mv >> 8) & 0xFF;          // Cell电压高8位
-    record[2] = cell_mv & 0xFF;                 // Cell电压低8位
-    record[3] = 0;                               // 保留
-    record[4] = 0;                               // 保留
-    record[5] = temp;                            // 温度
-    record[6] = soc;                             // SOC
-    record[7] = g_log_index & 0xFF;              // 序号低8位
+    record[0] = fault_code;            // 故障码
+    record[1] = (cell_mv >> 8) & 0xFF; // Cell电压高8位
+    record[2] = cell_mv & 0xFF;        // Cell电压低8位
+    record[3] = 0;                     // 保留
+    record[4] = 0;                     // 保留
+    record[5] = temp;                  // 温度
+    record[6] = soc;                   // SOC
+    record[7] = g_log_index & 0xFF;    // 序号低8位
 
     // 写入记录到Flash
     // 擦除后Flash全为0xFF，PageProgram可以直接写
@@ -131,7 +128,6 @@ void FlashLog_Write(uint8_t fault_code, uint16_t cell_mv, uint8_t temp, uint8_t 
 
     printf("[LOG] Fault #%d logged: Code=0x%02X\r\n", g_log_index - 1, fault_code);
 }
-
 
 // ─────────────────────────────────────────────
 // FlashLog_ReadAll — 读取所有故障记录到缓冲区
@@ -150,13 +146,13 @@ uint16_t FlashLog_ReadAll(uint8_t *buf, uint16_t max_len)
     uint16_t count;
 
     // g_log_index==0时，需要判断是否有记录
-    if(g_log_index == 0)
+    if (g_log_index == 0)
     {
         uint8_t test;
         XM25QH32_ReadData(LOG_SECTOR_ADDR, &test, 1);
-        if(test == 0xFF)
-            return 0;  // 扇区已擦除，无记录
-        uint16_t count = g_log_index;  // 有记录，写满了一圈
+        if (test == 0xFF)
+            return 0;            // 扇区已擦除，无记录
+        count = LOG_MAX_RECORDS; // 索引回绕到0，说明一整圈记录都有效
     }
     else
     {
@@ -165,7 +161,7 @@ uint16_t FlashLog_ReadAll(uint8_t *buf, uint16_t max_len)
 
     // 计算要读取的字节数
     uint16_t read_bytes = count * LOG_RECORD_SIZE;
-    if(read_bytes > max_len)
+    if (read_bytes > max_len)
         read_bytes = max_len;
 
     // 从Flash读取
@@ -173,7 +169,6 @@ uint16_t FlashLog_ReadAll(uint8_t *buf, uint16_t max_len)
 
     return count;
 }
-
 
 // ─────────────────────────────────────────────
 // FlashLog_PrintAll — 串口打印所有故障记录
@@ -189,7 +184,7 @@ void FlashLog_PrintAll(void)
     uint8_t buf[LOG_MAX_RECORDS * LOG_RECORD_SIZE];
     uint16_t count = FlashLog_ReadAll(buf, sizeof(buf));
 
-    if(count == 0)
+    if (count == 0)
     {
         printf("[LOG] No records.\r\n");
         return;
@@ -197,18 +192,17 @@ void FlashLog_PrintAll(void)
 
     printf("\r\n==== FAULT HISTORY (%d records) ====\r\n", count);
 
-    for(uint16_t i = 0; i < count; i++)
+    for (uint16_t i = 0; i < count; i++)
     {
         uint8_t *rec = buf + i * LOG_RECORD_SIZE;
-        uint8_t  fc  = rec[0];                      // 故障码
-        uint16_t v1  = ((uint16_t)rec[1] << 8) | rec[2];  // Cell电压
-        uint8_t  t   = rec[5];                      // 温度
-        uint8_t  s   = rec[6];                      // SOC
+        uint8_t fc = rec[0];                            // 故障码
+        uint16_t v1 = ((uint16_t)rec[1] << 8) | rec[2]; // Cell电压
+        uint8_t t = rec[5];                             // 温度
+        uint8_t s = rec[6];                             // SOC
 
         printf("#%03d: Code=0x%02X Cell=%dmV T=%dC SOC=%d%%\r\n", i, fc, v1, t, s);
     }
 }
-
 
 // ─────────────────────────────────────────────
 // FlashLog_Clear — 清除所有故障记录
@@ -228,4 +222,3 @@ void FlashLog_Clear(void)
 
     printf("[LOG] All fault records cleared.\r\n");
 }
-

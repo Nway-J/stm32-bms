@@ -10,7 +10,4 @@ extern volatile uint8_t g_adc_full_ready;
 void ADC_DMA_Init(void);
 uint8_t ADC_ReadSafe(uint16_t *ch0, uint16_t *ch1);
 
-
-
 #endif
-
